@@ -95,4 +95,26 @@ class TriangleBoxStepView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class Animator(var view : View, var animated : Boolean = false) {
+
+        fun animate(cb : () -> Unit) {
+            if (animated) {
+                cb()
+                try {
+                    Thread.sleep(50)
+                    view.invalidate()
+                } catch (ex : Exception) {
+
+                }
+            }
+        }
+
+        fun start(cb : () -> Unit) {
+            if (!animated) {
+                animated = true
+                view.postInvalidate()
+            }
+        }
+    }
 }
