@@ -18,7 +18,7 @@ val lines : Int = 3
 val scDiv : Double = 0.51
 val scGap : Float = 0.05f
 val sizeFactor : Float = 2.3f
-val strokeFactor : Int = 50
+val strokeFactor : Int = 90
 val color : Int = Color.parseColor("#0277BD")
 
 fun Int.getInverse() : Float = 1f / this
@@ -39,6 +39,9 @@ fun Canvas.drawTBSNode(i : Int, scale : Float, paint : Paint) {
     val sc2 : Float = scale.divideScale(1, 2)
     val size : Float = gap / sizeFactor
     val xGap : Float = size / (nodes + 1)
+    paint.color = color
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    paint.strokeCap = Paint.Cap.ROUND
     save()
     translate(w/2, gap * (i + 1))
     rotate(90f * sc2)
@@ -221,7 +224,7 @@ class TriangleBoxStepView(ctx : Context) : View(ctx) {
         fun create(activity: Activity) : TriangleBoxStepView {
             val view : TriangleBoxStepView = TriangleBoxStepView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
