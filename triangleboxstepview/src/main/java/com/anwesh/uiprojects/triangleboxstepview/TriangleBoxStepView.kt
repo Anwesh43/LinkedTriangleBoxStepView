@@ -215,4 +215,13 @@ class TriangleBoxStepView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity: Activity) : TriangleBoxStepView {
+            val view : TriangleBoxStepView = TriangleBoxStepView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
