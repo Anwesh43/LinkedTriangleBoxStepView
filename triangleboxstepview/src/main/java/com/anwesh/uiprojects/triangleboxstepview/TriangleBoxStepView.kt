@@ -110,10 +110,16 @@ class TriangleBoxStepView(ctx : Context) : View(ctx) {
             }
         }
 
-        fun start(cb : () -> Unit) {
+        fun start() {
             if (!animated) {
                 animated = true
                 view.postInvalidate()
+            }
+        }
+
+        fun stop() {
+            if (animated) {
+                animated = false
             }
         }
     }
@@ -183,6 +189,28 @@ class TriangleBoxStepView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : TriangleBoxStepView) {
+
+        private val tbs : TriangleBoxStep = TriangleBoxStep(0)
+        private val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            tbs.draw(canvas, paint)
+            animator.animate {
+                tbs.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            tbs.startUpdating {
+                animator.start()
+            }
         }
     }
 }
