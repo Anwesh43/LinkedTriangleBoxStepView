@@ -20,10 +20,11 @@ val scGap : Float = 0.05f
 val sizeFactor : Float = 2.3f
 val strokeFactor : Int = 90
 val color : Int = Color.parseColor("#0277BD")
+val  DELAY : Long = 25
 
 fun Int.getInverse() : Float = 1f / this
 
-fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.getInverse(), Math.max(0f, this - i * n.getInverse()))
+fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.getInverse(), Math.max(0f, this - i * n.getInverse())) * n
 
 fun Float.scaleFactor() : Float = Math.floor(this / scDiv).toFloat()
 
@@ -38,7 +39,7 @@ fun Canvas.drawTBSNode(i : Int, scale : Float, paint : Paint) {
     val sc1 : Float = scale.divideScale(0, 2)
     val sc2 : Float = scale.divideScale(1, 2)
     val size : Float = gap / sizeFactor
-    val xGap : Float = size / (nodes + 1)
+    val xGap : Float = size / (lines + 1)
     paint.color = color
     paint.strokeWidth = Math.min(w, h) / strokeFactor
     paint.strokeCap = Paint.Cap.ROUND
@@ -54,7 +55,7 @@ fun Canvas.drawTBSNode(i : Int, scale : Float, paint : Paint) {
         val sc : Float = sc1.divideScale(j, lines)
         val oDeg : Float = -30f + j * 30f
         save()
-        translate(-size / 2 + xGap * (j + 1), size / 6)
+        translate(-size / 2 + xGap * (j + 1), -size / 6)
         rotate(oDeg)
         drawLine(0f, 0f, 0f, (-size / 3) * sc, paint)
         restore()
@@ -107,7 +108,7 @@ class TriangleBoxStepView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(DELAY)
                     view.invalidate()
                 } catch (ex : Exception) {
 
